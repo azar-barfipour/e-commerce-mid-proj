@@ -1,0 +1,141 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* header */
+.nav-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav__logo img {
+  width: 20%;
+}
+.nav-bar {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+.nav__contact {
+  cursor: pointer;
+}
+.nav__cart {
+  cursor: pointer;
+  margin: 1rem;
+}
+.header__title {
+  font-size: 3rem;
+  color: rgb(167, 142, 1);
+  text-align: center;
+  background-image: url("./LanaBettyJewellery.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 600px;
+  min-width: 500px;
+}
+/* main */
+.main {
+  margin: 2rem auto;
+  width: 50%;
+}
+.search-wrapper {
+  margin: 1rem auto;
+}
+.search-bar {
+  width: 100%;
+  padding: 0.5rem;
+  outline: none;
+  border-radius: 0.5rem;
+  border: 2px solid rgb(214, 182, 1);
+  font-size: large;
+}
+.jew-list {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+.item {
+  list-style: none;
+  margin: 1rem;
+}
+.item-wrapper {
+  border: 10px solid rgb(214, 182, 1);
+  padding: 0.5rem;
+  border-radius: 1rem;
+  height: 400px;
+  position: relative;
+}
+.item__img {
+  width: 100%;
+  height: 100%;
+}
+.item__title {
+  height: 50px;
+}
+.item__title {
+  margin: 6rem;
+}
+.item__price {
+  margin: 1rem auto;
+  text-align: center;
+}
+.item__btn {
+  width: 100px;
+  padding: 0.5rem 0;
+  width: 100%;
+  cursor: pointer;
+  margin-top: 4.5rem;
+  background-color: rgb(218, 185, 3);
+  font: inherit;
+}
+/* for mobile */
+@media (max-width: 960px) {
+  .jew-list {
+    grid-template-columns: 100%;
+  }
+}
+.text-wrapper {
+  position: absolute;
+  top: 100;
+  overflow: hidden;
+  transition: 3s;
+  left: 0;
+  font-weight: bold;
+  background-color: rgba(255, 215, 0, 50%);
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  display: none;
+}
+.item-wrapper:hover .text-wrapper {
+  display: block;
+  top: 0;
+}
+/* cart */
+.cart-wrapper {
+  position: absolute;
+  z-index: 4;
+  right: 1rem;
+  top: 6rem;
+  background-color: rgba(255, 215, 0, 50%);
+  width: 200px;
+  text-align: center;
+}
+.cart {
+  display: none;
+}
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+}
+.cart-img__wrapper {
+  width: 100px;
+}
+.cart-img {
+  width: 30%;
+}
