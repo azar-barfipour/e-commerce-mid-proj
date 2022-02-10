@@ -5,6 +5,9 @@ const cart = document.querySelector(".cart");
 const cartNumber = document.querySelector(".nav__cart span");
 const cartList = document.querySelector(".cart-list");
 const total = document.querySelector(".total span");
+const reset = document.querySelector(".reset");
+const search = document.querySelector(".search-bar");
+const itemCard = document.querySelector(".item");
 
 // fetch data from API
 const getData = async () => {
@@ -15,7 +18,7 @@ const getData = async () => {
   console.log(data);
   renderList(data);
 };
-
+getData();
 // render list
 const renderList = (list) => {
   list.forEach((element) => {
@@ -42,11 +45,9 @@ const renderList = (list) => {
     }
   });
 };
-getData();
 
 // toggle cart
 cartNav.addEventListener("click", function (e) {
-  //   e.defaultPrevented();
   cart.classList.toggle("cart");
 });
 
@@ -57,17 +58,15 @@ const renderCartList = (id, list) => {
   console.log(list);
   const duplicate = cartArr.find((el) => el.id == id);
   if (duplicate) {
-    duplicate.num++;
-    console.log(duplicate);
-    return;
+    increaseUnitNumber(duplicate, id);
+  } else {
+    const clickedItem = list.find((item) => item.id == id);
+    cartArr.push({
+      ...clickedItem,
+      num: 1,
+    });
+    updateCart();
   }
-  const clickedItem = list.find((item) => item.id == id);
-  cartArr.push({
-    ...clickedItem,
-    num: 1,
-  });
-  console.log(cartArr);
-  updateCart();
 };
 // updating cart
 const updateCart = () => {
@@ -78,49 +77,87 @@ const updateCart = () => {
 // rendering cart items
 const renderCartItems = () => {
   cartList.innerHTML = "";
+  console.log(cartArr);
   cartArr.forEach((el) => {
-    cartList.innerHTML += `<li class='cart-item'>
+    cartList.innerHTML += `<li id=${el.id} class='cart-item'>
        <div class='cart-img__wrapper'>
        <img src=${el.image} class='cart-img'></img>
        </div>
        <div>${el.title}</div>
        <div>${el.price}$</div>
        <div>x${el.num}</div>
-       <div>x</div>
+       <button onclick="decreaseUnitNumber(${el.id})">Del</button>
        </li>`;
   });
 };
 
 // update numbers of cart
 const updateCartNumbers = () => {
+  let totalNum = 0;
+  console.log(cartArr);
   cartArr.forEach((el) => {
-    console.log(el.price);
-    let totalNum = +total.textContent;
-    totalNum += el.price;
-    console.log(totalNum);
-    total.textContent = totalNum;
+    totalNum += el.price * el.num;
+  });
+  console.log(totalNum.toFixed(2));
+  total.innerHTML = `${totalNum.toFixed(2)}$`;
+};
+
+// increase cart num
+const increaseUnitNumber = (list, id) => {
+  console.log(id);
+  list.num++;
+  updateCart();
+};
+
+// decrease cart num
+const decreaseUnitNumber = (id) => {
+  cartNumber.textContent--;
+  console.log(id);
+  cartArr.forEach((el) => {
+    if (el.id == id && el.num == 1) removeLastLi(id);
+  });
+  cartArr = cartArr.map((el) => {
+    let number = el.num;
+    if (el.id == id && el.num > 1) {
+      number--;
+    }
+    console.log({ ...el, num: number });
+    return { ...el, num: number };
+  });
+  console.log(cartArr);
+  updateCart();
+};
+
+// remove last item
+const removeLastLi = (id) => {
+  cartArr.map((el) => {
+    console.log(el.id);
+    cartArr = cartArr.filter((item) => item.id != id);
+    return cartArr;
   });
 };
-//   const eachImg = li.firstElementChild.firstElementChild.src;
-//   const eachTitle =
-//     li.firstElementChild.children[1].firstElementChild.textContent;
-//   const eachPrice = li.firstElementChild.children[1].children[1].textContent;
-//   const eachPriceWitout$ = eachPrice.slice(0, -1);
-//   const html = `<li class='cart-item'>
-//   <div class='cart-img__wrapper'>
-//   <img src=${eachImg} class='cart-img'></img>
-//   </div>
-//   <div>${eachTitle}</div>
-//   <div>${eachPrice}</div>
-//   <div>x1</div>
-//   <div>x</div>
-//   </li>`;
 
-//   cartList.insertAdjacentHTML("beforeend", html);
+// reset cart
+reset.addEventListener("click", function (e) {
+  console.log(e.target);
+  cartArr = [];
+  cartList.innerHTML = "";
+  cartNumber.innerHTML = 0;
+  total.innerHTML = 0;
+});
 
-// increasing total price
-//   console.log(+eachPriceWitout$);
-//   let totalNum = +total.textContent;
-//   console.log(totalNum);
-//   totalNum += +eachPriceWitout$;
-//   total.textContent = totalNum;
+// search
+search.addEventListener("keydown", function (e) {
+  const value = e.target.value;
+  const allItemsName = document.querySelectorAll(".item__title");
+  if (value.lenght === 0) {
+    const html = `<p class='error-'>No Items Found</p>`;
+  }
+  allItemsName.forEach((item) => {
+    if (item.innerHTML.toLowerCase().includes(value.toLowerCase())) {
+      item.closest("li").style.display = "block";
+    } else {
+      item.closest("li").style.display = "none";
+    }
+  });
+});
