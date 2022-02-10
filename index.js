@@ -83,10 +83,10 @@ const renderCartItems = () => {
        <div class='cart-img__wrapper'>
        <img src=${el.image} class='cart-img'></img>
        </div>
-       <div>${el.title}</div>
-       <div>${el.price}$</div>
-       <div>x${el.num}</div>
-       <button onclick="decreaseUnitNumber(${el.id})">Del</button>
+       <div class='cart-title'>${el.title}</div>
+       <div class='cart-price'>${el.price}$</div>
+       <div class='cart-num'>x${el.num}</div>
+       <button onclick="decreaseUnitNumber(${el.id})" class='cart-btn'>&#128465;</button>
        </li>`;
   });
 };
@@ -150,9 +150,6 @@ reset.addEventListener("click", function (e) {
 search.addEventListener("keydown", function (e) {
   const value = e.target.value;
   const allItemsName = document.querySelectorAll(".item__title");
-  if (value.lenght === 0) {
-    const html = `<p class='error-'>No Items Found</p>`;
-  }
   allItemsName.forEach((item) => {
     if (item.innerHTML.toLowerCase().includes(value.toLowerCase())) {
       item.closest("li").style.display = "block";
